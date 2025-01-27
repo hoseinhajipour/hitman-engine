@@ -3,6 +3,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class TPSPlayerController : MonoBehaviour
 {
+    public bool controlable;
     [Header("Movement Settings")]
     public float walkSpeed = 2f;
     public float runSpeed = 5f;
@@ -28,6 +29,7 @@ public class TPSPlayerController : MonoBehaviour
 
     void Update()
     {
+        if (!controlable) return;
         HandleMovement();
     }
 

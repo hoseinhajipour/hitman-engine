@@ -28,7 +28,7 @@ public class PlayCharacterAnimationAction : ActionBase
         }
 
         // Get Animator component
-        Animator animator = target.GetComponent<CharacterControllerWithNavMesh>()?.animator;
+        Animator animator = target.GetComponentInChildren<Animator>();
         if (animator == null)
         {
             Debug.LogError("PlayCharacterAnimationAction: No Animator component found on target!");
