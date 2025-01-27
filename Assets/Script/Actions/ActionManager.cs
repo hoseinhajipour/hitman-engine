@@ -8,9 +8,19 @@ public class ActionManager : MonoBehaviour
 
     public void RunActions(GameObject target)
     {
+        StartCoroutine(RunActionsSequentially(target));
+    }
+
+    private System.Collections.IEnumerator RunActionsSequentially(GameObject target)
+    {
         foreach (var action in actions)
         {
-            action?.Execute(target);
+            bool isComplete = false;
+
+            action.Execute(target, () => isComplete = true);
+
+            // Wait until the action completes
+            yield return new WaitUntil(() => isComplete);
         }
     }
 }

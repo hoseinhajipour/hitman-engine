@@ -12,37 +12,27 @@ public class RotateAction : ActionBase
     [Tooltip("The duration of the rotation in seconds.")]
     public float duration = 1f;
 
-    public override void Execute(GameObject targetObject)
+    public override void Execute(GameObject hit_target, System.Action onComplete)
     {
-        // Use the provided targetObject if no specific target is set
-        GameObject rotationTarget = target != null ? target : targetObject;
-
-        if (rotationTarget == null)
+        if (target == null)
         {
             Debug.LogError("RotateAction: Target GameObject is null!");
+            onComplete?.Invoke();
             return;
         }
 
         if (duration <= 0)
         {
             Debug.LogWarning("RotateAction: Duration must be greater than zero. Rotating instantly.");
-            rotationTarget.transform.eulerAngles = targetRotation;
+            target.transform.eulerAngles = targetRotation;
+            onComplete?.Invoke();
             return;
         }
 
-        // Start the rotation coroutine
-        MonoBehaviour behaviour = rotationTarget.GetComponent<MonoBehaviour>();
-        if (behaviour != null)
-        {
-            behaviour.StartCoroutine(RotateCoroutine(rotationTarget));
-        }
-        else
-        {
-            Debug.LogError("RotateAction: Target GameObject does not have a MonoBehaviour component to start the coroutine.");
-        }
+        target.GetComponent<MonoBehaviour>()?.StartCoroutine(RotateCoroutine(target, onComplete));
     }
 
-    private System.Collections.IEnumerator RotateCoroutine(GameObject target)
+    private System.Collections.IEnumerator RotateCoroutine(GameObject target, System.Action onComplete)
     {
         Quaternion startRotation = target.transform.rotation;
         Quaternion endRotation = Quaternion.Euler(targetRotation);
@@ -51,12 +41,13 @@ public class RotateAction : ActionBase
         while (elapsedTime < duration)
         {
             elapsedTime += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsedTime / duration); // Ensure t stays between 0 and 1
+            float t = Mathf.Clamp01(elapsedTime / duration);
             target.transform.rotation = Quaternion.Lerp(startRotation, endRotation, t);
-            yield return null; // Wait for the next frame
+            yield return null;
         }
 
-        // Ensure the final rotation is exact
         target.transform.rotation = endRotation;
+        onComplete?.Invoke();
     }
+
 }

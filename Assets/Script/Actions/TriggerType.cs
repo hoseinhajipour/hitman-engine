@@ -1,7 +1,8 @@
 public enum TriggerType
 {
-    OnTriggerEnter, // تریگر بر اساس ورود به کولایدر
+    OnStart, // تریگر بر اساس ورود به کولایدر
     OnKeyPress,     // تریگر بر اساس زدن کلید کیبورد
     OnMouseClick,   // تریگر بر اساس کلیک موس روی کولایدر
-    OnTag          // تریگر بر اساس تگ
+    OnTag,          // تریگر بر اساس تگ
+    onGameObject
 }

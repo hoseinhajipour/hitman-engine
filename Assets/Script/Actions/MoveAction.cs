@@ -7,11 +7,12 @@ public class MoveAction : ActionBase
     public Vector3 targetPosition; // Target position to move to
     public float duration;         // Duration of the movement in seconds
 
-    public override void Execute(GameObject collider)
+    public override void Execute(GameObject hit_target, System.Action onComplete)
     {
         if (target == null)
         {
             Debug.LogError("MoveAction: Target GameObject is null!");
+            onComplete?.Invoke();
             return;
         }
 
@@ -19,14 +20,15 @@ public class MoveAction : ActionBase
         {
             Debug.LogWarning("MoveAction: Duration must be greater than zero. Moving instantly.");
             target.transform.position = targetPosition;
+            onComplete?.Invoke();
             return;
         }
 
-        // Start a coroutine for smooth movement
-        target.GetComponent<MonoBehaviour>()?.StartCoroutine(MoveCoroutine(target));
+        target.GetComponent<MonoBehaviour>()?.StartCoroutine(MoveCoroutine(target, onComplete));
     }
 
-    private System.Collections.IEnumerator MoveCoroutine(GameObject target)
+
+    private System.Collections.IEnumerator MoveCoroutine(GameObject target, System.Action onComplete)
     {
         Vector3 startPosition = target.transform.position;
         float elapsedTime = 0;
@@ -40,5 +42,6 @@ public class MoveAction : ActionBase
         }
 
         target.transform.position = targetPosition;
+        onComplete?.Invoke(); // Notify that the action is complete
     }
 }

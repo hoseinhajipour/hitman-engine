@@ -3,11 +3,20 @@ using UnityEngine;
 public class ActionTrigger : MonoBehaviour
 {
     public ActionManager actionManager; // مدیر اکشن‌ها
-    public GameObject targetObject;     // شیء هدف
-    public TriggerType triggerType = TriggerType.OnTriggerEnter; // نوع تریگر
+
+    public TriggerType triggerType = TriggerType.OnStart; // نوع تریگر
     public KeyCode triggerKey = KeyCode.Space; // کلید کیبورد برای تریگر
     public string triggerTag = "Player"; // تگ برای تریگر
+    public GameObject targetObject;     // شیء هدف
 
+
+    private void start()
+    {
+        if (triggerType == TriggerType.OnStart)
+        {
+            ExecuteActions();
+        }
+    }
     private void Update()
     {
         // بررسی تریگر بر اساس نوع
@@ -31,7 +40,8 @@ public class ActionTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (triggerType == TriggerType.OnTriggerEnter)
+
+        if (triggerType == TriggerType.onGameObject)
         {
             if (actionManager != null && other.gameObject == targetObject)
             {
@@ -42,6 +52,7 @@ public class ActionTrigger : MonoBehaviour
         {
             if (actionManager != null && other.CompareTag(triggerTag))
             {
+
                 ExecuteActions();
             }
         }
@@ -63,7 +74,7 @@ public class ActionTrigger : MonoBehaviour
 
     private void ExecuteActions()
     {
-        if (actionManager != null && targetObject != null)
+        if (actionManager != null)
         {
             actionManager.RunActions(targetObject);
         }

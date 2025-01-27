@@ -5,20 +5,14 @@ using UnityEngine;
 public class ActionTriggerEditor : Editor
 {
     private SerializedProperty actionManager;
-    private SerializedProperty targetObject;
+
     private SerializedProperty triggerType;
     private SerializedProperty triggerKey;
     private SerializedProperty triggerTag;
+    private SerializedProperty targetObject;
 
     private void OnEnable()
     {
-        // Ensure the target object is valid
-        if (target == null)
-        {
-            Debug.LogError("ActionTrigger object is null.");
-            return;
-        }
-
         // Find the serialized properties
         actionManager = serializedObject.FindProperty("actionManager");
         targetObject = serializedObject.FindProperty("targetObject");
@@ -36,19 +30,11 @@ public class ActionTriggerEditor : Editor
 
     public override void OnInspectorGUI()
     {
-        // Check if the target object is valid
-        if (target == null)
-        {
-            EditorGUILayout.HelpBox("Target object is null. Ensure the ActionTrigger component is attached to a GameObject.", MessageType.Error);
-            return;
-        }
-
         // Start modifying the inspector
         serializedObject.Update();
 
         // Display common fields
         EditorGUILayout.PropertyField(actionManager);
-        EditorGUILayout.PropertyField(targetObject);
 
         // Display trigger type field
         EditorGUILayout.PropertyField(triggerType);
@@ -70,8 +56,12 @@ public class ActionTriggerEditor : Editor
                 // Show Tag field for OnTag trigger
                 EditorGUILayout.PropertyField(triggerTag, new GUIContent("Tag"));
                 break;
+            case TriggerType.onGameObject:
+                // Show Tag field for OnTag trigger
+                EditorGUILayout.PropertyField(targetObject, new GUIContent("Target Object"));
+                break;
 
-            case TriggerType.OnTriggerEnter:
+            case TriggerType.OnStart:
                 // No additional field for OnTriggerEnter
                 break;
 
