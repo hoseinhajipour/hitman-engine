@@ -1,5 +1,5 @@
 using UnityEngine;
-
+[ActionCategory("GameObject")]
 [System.Serializable]
 public class SendMessage : ActionBase
 {

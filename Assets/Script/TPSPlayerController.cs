@@ -7,6 +7,8 @@ public class TPSPlayerController : MonoBehaviour
     public float walkSpeed = 2f;
     public float runSpeed = 5f;
     public float gravity = -9.81f;
+    public float jumpHeight = 2f;
+    public bool canJump = true;
 
     [Header("Animation Settings")]
     public Animator animator;
@@ -16,6 +18,7 @@ public class TPSPlayerController : MonoBehaviour
 
     private CharacterController controller;
     private Vector3 velocity;
+    private bool isJumping = false;
 
     void Start()
     {
@@ -25,8 +28,7 @@ public class TPSPlayerController : MonoBehaviour
 
     void Update()
     {
-
-            HandleMovement();
+        HandleMovement();
     }
 
     private void HandleMovement()
@@ -52,9 +54,31 @@ public class TPSPlayerController : MonoBehaviour
         controller.Move(move * speed * Time.deltaTime);
 
         // Ground check and gravity
-        if (controller.isGrounded && velocity.y < 0)
+        if (controller.isGrounded)
         {
-            velocity.y = -2f; // Small constant to keep grounded
+            if (velocity.y < 0)
+            {
+                velocity.y = -2f; // Small constant to keep grounded
+
+                if (isJumping)
+                {
+                    isJumping = false;
+                    animator.SetBool("IsJumping", isJumping);
+                    animator.SetTrigger("JumpLand"); // Trigger the landing animation
+                }
+            }
+
+            // Jumping logic
+            if (canJump && Input.GetButtonDown("Jump"))
+            {
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                isJumping = true;
+                animator.SetTrigger("JumpStart"); // Trigger the jump start animation
+            }
+        }
+        else if (isJumping)
+        {
+            animator.SetBool("IsJumping", true); // Set the loop animation while in the air
         }
 
         velocity.y += gravity * Time.deltaTime;

@@ -189,45 +189,63 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actions:
+  - rid: 6402301804124569619
+  - rid: 6402301804124569620
   - rid: 6402301804124569602
-  - rid: 6402301804124569605
-  - rid: 6402301804124569603
+  - rid: 6402301804124569615
   - rid: 6402301804124569607
-  - rid: -2
-  - rid: 6402301804124569611
+  - rid: 6402301804124569613
+  - rid: 6402301804124569618
+  - rid: 6402301804124569614
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 6402301804124569602
       type: {class: LogMessageAction, ns: , asm: Assembly-CSharp}
       data:
         message: Default log message
         logType: 3
-    - rid: 6402301804124569603
-      type: {class: ToggleGameObjectAction, ns: , asm: Assembly-CSharp}
-      data:
-        target: {fileID: 1000906753}
-        activate: 0
-    - rid: 6402301804124569605
-      type: {class: WaitForSecondsAction, ns: , asm: Assembly-CSharp}
-      data:
-        duration: 1
     - rid: 6402301804124569607
       type: {class: NavMeshMoveAction, ns: , asm: Assembly-CSharp}
       data:
         target: {fileID: 261655469}
         destination: {x: 0, y: 0, z: 0}
+        destinationTrans: {fileID: 1201686697}
         waitToEnd: 1
         speed: 3.5
         Run: 0
-    - rid: 6402301804124569611
+    - rid: 6402301804124569613
+      type: {class: WaitForSecondsAction, ns: , asm: Assembly-CSharp}
+      data:
+        duration: 2
+    - rid: 6402301804124569614
       type: {class: SendMessage, ns: , asm: Assembly-CSharp}
       data:
         target: {fileID: 261655469}
         methodName: Die
         parameter: 
+    - rid: 6402301804124569615
+      type: {class: WaitForSecondsAction, ns: , asm: Assembly-CSharp}
+      data:
+        duration: 1
+    - rid: 6402301804124569618
+      type: {class: PlayCharacterAnimationAction, ns: , asm: Assembly-CSharp}
+      data:
+        target: {fileID: 261655469}
+        animationClip: {fileID: -203655887218126122, guid: b5187952252abbe4ca2039d28e839078, type: 3}
+        waitForEnd: 1
+        fadeDuration: 0.5
+    - rid: 6402301804124569619
+      type: {class: WaitForSecondsAction, ns: , asm: Assembly-CSharp}
+      data:
+        duration: 1
+    - rid: 6402301804124569620
+      type: {class: PlayCharacterAnimationAction, ns: , asm: Assembly-CSharp}
+      data:
+        target: {fileID: 261655469}
+        animationClip: {fileID: -203655887218126122, guid: cc4b9120b8e5b9f4ebc04b3fb99fbbce, type: 3}
+        waitForEnd: 1
+        fadeDuration: 0.5
 --- !u!114 &23175282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1525,6 +1543,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1198001993}
   m_CullTransparentMesh: 1
+--- !u!1 &1201686696
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1201686697}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1201686697
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1201686696}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 5.52, y: 1.5700598, z: 2.56}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1214706729
 GameObject:
   m_ObjectHideFlags: 0
@@ -2551,6 +2600,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 5026656780077867591, guid: 8ef75985f04286444ae421122620d5f7, type: 3}
+      propertyPath: jumpHeight
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5026656780077867591, guid: 8ef75985f04286444ae421122620d5f7, type: 3}
       propertyPath: cameraTransform
       value: 
       objectReference: {fileID: 963194228}
@@ -2629,7 +2682,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 740848263844664381, guid: d24579bf2ffb0ab4bb9975830266ad9d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -19.13
+      value: -5.75
       objectReference: {fileID: 0}
     - target: {fileID: 740848263844664381, guid: d24579bf2ffb0ab4bb9975830266ad9d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2697,3 +2750,4 @@ SceneRoots:
   - {fileID: 2013051640}
   - {fileID: 1237970632}
   - {fileID: 23175283}
+  - {fileID: 1201686697}

@@ -162,10 +162,11 @@ public class InventoryController : MonoBehaviour
 
         Debug.Log("Inventory full! Cannot pick up weapon.");
     }
-
+/*
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, pickupRange);
     }
+    */
 }

@@ -1,11 +1,15 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+[ActionCategory("Character")]
 [System.Serializable]
 public class NavMeshMoveAction : ActionBase
 {
     public GameObject target;
     public Vector3 destination;
+
+    [Tooltip("Optional Transform to override the destination position.")]
+    public Transform destinationTrans;
 
     [Tooltip("Wait for the NavMeshAgent to reach the destination before completing the task.")]
     public bool waitToEnd;
@@ -43,6 +47,12 @@ public class NavMeshMoveAction : ActionBase
         if (CharacterControllerWithNavMesh != null && Run)
         {
             CharacterControllerWithNavMesh.isRunning = true;
+        }
+
+        // Update the destination if destinationTrans is provided
+        if (destinationTrans != null)
+        {
+            destination = destinationTrans.position;
         }
 
         // Set the destination

@@ -1,5 +1,5 @@
 using UnityEngine;
-
+[ActionCategory("Utility")]
 [System.Serializable]
 public class ResetAction : ActionBase
 {

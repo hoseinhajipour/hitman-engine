@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[ActionCategory("GameObject")]
 [System.Serializable]
 public class MoveAction : ActionBase
 {
