@@ -32,7 +32,7 @@ public static class EditorMenuItems
     static void CreatePlayerObject(MenuCommand menuCommand)
     {
         // Path to the Player prefab
-        string prefabPath = "Assets/Prefabs/Character/Player.prefab";
+        string prefabPath = "Assets/Prefabs/Character/Player Component.prefab";
 
         // Load the Player prefab
         GameObject playerPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
