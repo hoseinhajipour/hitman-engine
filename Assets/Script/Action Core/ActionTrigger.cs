@@ -10,7 +10,7 @@ public class ActionTrigger : MonoBehaviour
     public GameObject targetObject;     // شیء هدف
 
 
-    private void start()
+    void Start()
     {
         if (triggerType == TriggerType.OnStart)
         {
@@ -76,6 +76,9 @@ public class ActionTrigger : MonoBehaviour
     {
         if (actionManager != null)
         {
+            if(targetObject==null){
+               targetObject=this.gameObject; 
+            }
             actionManager.RunActions(targetObject);
         }
     }

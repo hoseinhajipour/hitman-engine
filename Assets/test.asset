@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20ece13e57ab2a54e80667f7d20c2544, type: 3}
+  m_Name: test
+  m_EditorClassIdentifier: 
+  StartPosition: {x: -331, y: 182}
+  AnyPosition: {x: -182, y: 464}
+  States:
+  - rid: 6402301804124569608
+  AnyTransitions: []
+  StartingState:
+    rid: 6402301804124569608
+  Parameters:
+  - rid: 6402301804124569609
+  _currentState:
+    _behaviours: []
+    Position: {x: 0, y: 0}
+    _name: 
+    TransitionsFrom: []
+    TransitionsTo: []
+  _transitioningTo:
+    _behaviours: []
+    Position: {x: 0, y: 0}
+    _name: 
+    TransitionsFrom: []
+    TransitionsTo: []
+  _triggersActive: []
+  references:
+    version: 2
+    RefIds:
+    - rid: 6402301804124569608
+      type: {class: FSMC_State, ns: FSMC.Runtime, asm: FSMC.Runtime}
+      data:
+        _behaviours:
+        - rid: 6402301804124569610
+        Position: {x: 57, y: 270}
+        _name: idle
+        TransitionsFrom: []
+        TransitionsTo: []
+    - rid: 6402301804124569609
+      type: {class: FSMC_BoolParameter, ns: FSMC.Runtime, asm: FSMC.Runtime}
+      data:
+        _type: 3
+        _name: Trigger
+        _value: 0
+    - rid: 6402301804124569610
+      type: {class: test, ns: , asm: Assembly-CSharp}
+      data:
+        enabled: 1
