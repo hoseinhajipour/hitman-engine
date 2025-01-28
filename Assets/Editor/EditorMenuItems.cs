@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using Microsoft.SqlServer.Server;
 
 public static class EditorMenuItems
 {
@@ -15,7 +16,7 @@ public static class EditorMenuItems
         sphereCollider.isTrigger = true;
 
         // Add the InteractionSystem component
-        interactionObject.AddComponent<InteractionSystem>();
+        interactionObject.AddComponent<Interaction>();
 
         // Ensure the new GameObject is selected and focused in the hierarchy
         GameObjectUtility.SetParentAndAlign(interactionObject, menuCommand.context as GameObject);
@@ -26,7 +27,29 @@ public static class EditorMenuItems
         // Select the newly created object
         Selection.activeObject = interactionObject;
     }
+    // Menu item for creating an Interaction object
+    [MenuItem("GameObject/Hitman/Trigger", false, 10)]
+    static void CreateTriggerObject(MenuCommand menuCommand)
+    {
+        // Create a new empty GameObject
+        GameObject TriggerObject = new GameObject("Trigger");
 
+        // Add a SphereCollider component and set it as a trigger
+        SphereCollider sphereCollider = TriggerObject.AddComponent<SphereCollider>();
+        sphereCollider.isTrigger = true;
+
+        // Add the InteractionSystem component
+        TriggerObject.AddComponent<ActionTrigger>();
+
+        // Ensure the new GameObject is selected and focused in the hierarchy
+        GameObjectUtility.SetParentAndAlign(TriggerObject, menuCommand.context as GameObject);
+
+        // Register the creation in the undo system
+        Undo.RegisterCreatedObjectUndo(TriggerObject, "Create " + TriggerObject.name);
+
+        // Select the newly created object
+        Selection.activeObject = TriggerObject;
+    }
     // Menu item for creating a Player object from a prefab
     [MenuItem("GameObject/Hitman/Character/Player", false, 11)]
     static void CreatePlayerObject(MenuCommand menuCommand)

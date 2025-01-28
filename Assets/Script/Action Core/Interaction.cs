@@ -5,7 +5,9 @@ public class Interaction : MonoBehaviour
 {
     private bool isNearInteractable = false; // Is the player near an interactable object?
 
-    public ActionManager actionManager;
+    public bool allow;
+    public ActionManager SuccessAction;
+    public ActionManager FailureAction;
     public GameObject uiCanvas; // Reference to the UI Canvas
     public float fadeDistance = 5f; // Distance at which the UI starts fading
     private CanvasGroup canvasGroup;
@@ -29,7 +31,13 @@ public class Interaction : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E) && isNearInteractable)
         {
-            actionManager.RunActions(player);
+            if (allow)
+            {
+                SuccessAction.RunActions(player);
+            }else{
+                FailureAction.RunActions(player);
+            }
+
         }
 
         // Update UI opacity based on distance

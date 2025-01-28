@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7180365459923185221}
   - component: {fileID: 6057438998366666603}
   - component: {fileID: 3428563178873905466}
+  - component: {fileID: 2842996002966078499}
   m_Layer: 0
   m_Name: Trigger
   m_TagString: Untagged
@@ -67,7 +68,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efc565fc26ac0df41bfabdaeb2840d79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  actionManager: {fileID: 3428563178873905466}
+  allow: 1
+  SuccessAction: {fileID: 3428563178873905466}
+  FailureAction: {fileID: 2842996002966078499}
   uiCanvas: {fileID: 7512175113783354482}
   fadeDistance: 5
 --- !u!114 &3428563178873905466
@@ -83,16 +86,41 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actions:
+  - rid: -2
   - rid: 6402301818438680581
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 6402301818438680581
       type: {class: DoorAction, ns: , asm: Assembly-CSharp}
       data:
         door: {fileID: 5839117191460103538}
         duration: 1
         proximityRadius: 1
+--- !u!114 &2842996002966078499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 111455440522738762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e01f8ff0208ab3e4da096d5c5cf36377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions:
+  - rid: 6402301821946167296
+  references:
+    version: 2
+    RefIds:
+    - rid: 6402301821946167296
+      type: {class: LogMessageAction, ns: , asm: Assembly-CSharp}
+      data:
+        message: you cant
+        logType: 3
 --- !u!1 &2923187590031767494
 GameObject:
   m_ObjectHideFlags: 0
