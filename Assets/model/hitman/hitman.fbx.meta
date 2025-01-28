@@ -547,7 +547,7 @@ ModelImporter:
     - name: mixamorig:RightUpLeg
       parentName: mixamorig:Hips
       position: {x: 0.11035016, y: -0.07673201, z: -0.0042797336}
-      rotation: {x: -0.00056163897, y: 0.01156285, z: 0.9987478, w: -0.04866966}
+      rotation: {x: -0.000561639, y: 0.011562851, z: 0.9987479, w: -0.048669662}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:RightLeg
       parentName: mixamorig:RightUpLeg
@@ -712,7 +712,7 @@ ModelImporter:
     - name: mixamorig:Head
       parentName: mixamorig:Neck
       position: {x: -0, y: 0.07903, z: 0.037893027}
-      rotation: {x: 0, y: 0, z: 1.2344782e-30, w: 1}
+      rotation: {x: 0.052425914, y: 5.0652737e-12, z: 5.3196565e-11, w: 0.9986248}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:HeadTop_End
       parentName: mixamorig:Head
@@ -782,7 +782,7 @@ ModelImporter:
     - name: mixamorig:RightHandPinky1
       parentName: mixamorig:RightHand
       position: {x: 0.049309876, y: 0.14667149, z: 0.0028306092}
-      rotation: {x: -0.0006033742, y: -0.002900398, z: 0.054048616, w: 0.9985339}
+      rotation: {x: -0.0006033743, y: -0.002900398, z: 0.054048624, w: 0.9985339}
       scale: {x: 1, y: 1, z: 1}
     - name: mixamorig:RightHandPinky2
       parentName: mixamorig:RightHandPinky1
