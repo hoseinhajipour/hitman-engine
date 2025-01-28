@@ -14,13 +14,11 @@ public class ResetAction : ActionBase
             return;
         }
 
-        // Stop any ongoing actions in the ActionManager
-        targetActionManager.StopAllCoroutines();
+        Debug.Log("ResetAction: Resetting ActionManager.");
+        targetActionManager.ResetActions(hit_target);
 
-        // Restart the ActionManager
-        targetActionManager.RunActions(hit_target);
-
-        Debug.Log("ResetAction: ActionManager has been reset and restarted.");
-        onComplete?.Invoke(); // Notify that the reset action is complete
+        Debug.Log("ResetAction: Completed reset.");
+        onComplete?.Invoke();
     }
+
 }

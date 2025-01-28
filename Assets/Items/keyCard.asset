@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daa9d3c33e224d643a85f8ef01bdc31a, type: 3}
   m_Name: keyCard
   m_EditorClassIdentifier: 
-  itemName: 
-  icon: {fileID: 0}
+  itemName: keyCard
+  icon: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
   price: 0

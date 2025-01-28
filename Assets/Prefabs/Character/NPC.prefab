@@ -1,5 +1,70 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &2333716028808718208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4163057929915442813}
+  - component: {fileID: 2419699830343664529}
+  m_Layer: 0
+  m_Name: SightActions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4163057929915442813
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2333716028808718208}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 740848263844664381}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2419699830343664529
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2333716028808718208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e01f8ff0208ab3e4da096d5c5cf36377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions:
+  - rid: 6402301821946167303
+  - rid: 6402301821946167307
+  destroyOnEnd: 0
+  enableDebugLogs: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 6402301821946167303
+      type: {class: LogMessageAction, ns: , asm: Assembly-CSharp}
+      data:
+        message: find player
+        logType: 3
+    - rid: 6402301821946167307
+      type: {class: FollowPlayerAction, ns: , asm: Assembly-CSharp}
+      data:
+        Target: {fileID: 2383868157470613218}
+        speed: 3.5
+        Run: 1
+        followDistance: 2
+        stopThreshold: 1
 --- !u!1 &2383868157470613218
 GameObject:
   m_ObjectHideFlags: 0
@@ -14,9 +79,10 @@ GameObject:
   - component: {fileID: 3247748597648420430}
   - component: {fileID: 2964206002662697652}
   - component: {fileID: 3588223172828210294}
+  - component: {fileID: 6460823244181682261}
   m_Layer: 0
   m_Name: NPC
-  m_TagString: Player
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35,6 +101,9 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6225668054146192446}
+  - {fileID: 4163057929915442813}
+  - {fileID: 3227558835371236397}
+  - {fileID: 5983023383495735594}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!143 &1615387152100827055
@@ -128,6 +197,160 @@ MonoBehaviour:
   walkSpeed: 2
   runSpeed: 5
   animator: {fileID: 37762489518935620}
+  isRunning: 0
+--- !u!114 &6460823244181682261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2383868157470613218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3be6a4e3f901824a96e24a593a5b82c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  headBone: {fileID: 2980686564984509}
+  detectionRange: 28.2
+  detectionAngle: 90
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  attackRange: 2
+  SightActions: {fileID: 2419699830343664529}
+  PatrolActions: {fileID: 5631309472389345320}
+  AttackActions: {fileID: 461319099817106897}
+--- !u!1 &3207897071363103270
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5983023383495735594}
+  - component: {fileID: 461319099817106897}
+  m_Layer: 0
+  m_Name: AttackActions
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5983023383495735594
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3207897071363103270}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 740848263844664381}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &461319099817106897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3207897071363103270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e01f8ff0208ab3e4da096d5c5cf36377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions:
+  - rid: 6402301821946167316
+  - rid: 6402301821946167317
+  - rid: 6402301821946167319
+  - rid: 6402301821946167318
+  destroyOnEnd: 0
+  enableDebugLogs: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 6402301821946167316
+      type: {class: LogMessageAction, ns: , asm: Assembly-CSharp}
+      data:
+        message: attack
+        logType: 3
+    - rid: 6402301821946167317
+      type: {class: PlayAnimationAction, ns: , asm: Assembly-CSharp}
+      data:
+        target: {fileID: 6714256474581880452}
+        animationName: Punching
+        avatarLayerIndex: -1
+        avatarLayerWeight: 1
+        waitForEnd: 1
+    - rid: 6402301821946167318
+      type: {class: ResetAction, ns: , asm: Assembly-CSharp}
+      data:
+        targetActionManager: {fileID: 461319099817106897}
+    - rid: 6402301821946167319
+      type: {class: WaitForSecondsAction, ns: , asm: Assembly-CSharp}
+      data:
+        duration: 1
+--- !u!1 &6827501029762947823
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3227558835371236397}
+  - component: {fileID: 5631309472389345320}
+  m_Layer: 0
+  m_Name: PatrolAction
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3227558835371236397
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6827501029762947823}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 740848263844664381}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5631309472389345320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6827501029762947823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e01f8ff0208ab3e4da096d5c5cf36377, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  actions:
+  - rid: 6402301821946167303
+  destroyOnEnd: 0
+  enableDebugLogs: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 6402301821946167303
+      type: {class: LogMessageAction, ns: , asm: Assembly-CSharp}
+      data:
+        message: PatrolAction
+        logType: 3
 --- !u!1001 &5903301437065851861
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -289,6 +512,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 6970204109095265903}
   m_SourcePrefab: {fileID: 100100000, guid: 7ba2ebf599649034898aa5cbed26fafc, type: 3}
+--- !u!4 &2980686564984509 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -3321919801592875672, guid: 7ba2ebf599649034898aa5cbed26fafc, type: 3}
+  m_PrefabInstance: {fileID: 5903301437065851861}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &37762489518935620 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 7ba2ebf599649034898aa5cbed26fafc, type: 3}

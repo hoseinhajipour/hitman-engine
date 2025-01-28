@@ -52,26 +52,54 @@ public class TPSPlayerController : MonoBehaviour
         Vector3 forward = cameraTransform.forward;
         Vector3 right = cameraTransform.right;
 
+        // Flatten movement vectors
         forward.y = 0f;
         right.y = 0f;
         forward.Normalize();
         right.Normalize();
 
+        // Calculate movement direction
         Vector3 move = (forward * moveZ + right * moveX).normalized;
 
-        controller.Move(move * speed * Time.deltaTime);
+        // Ground check and reset vertical velocity if grounded
+        if (controller.isGrounded)
+        {
+            if (velocity.y < 0)
+            {
+                velocity.y = -2f; // Keeps the player grounded
+            }
 
-        // Animator Updates
-        animator.SetFloat("Speed", move.magnitude);
-        animator.SetBool("IsRunning", Input.GetKey(KeyCode.LeftShift) && !isCrouching);
-        animator.SetBool("IsCrouching", isCrouching);
+            // Handle jumping
+            if (canJump && Input.GetButtonDown("Jump"))
+            {
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                isJumping = true;
+            }
+        }
+        else
+        {
+            isJumping = false;
+        }
 
+        // Apply gravity
+        velocity.y += gravity * Time.deltaTime;
+
+        // Combine horizontal and vertical movement
+        controller.Move((move * speed + velocity) * Time.deltaTime);
+
+        // Rotate the player to face movement direction
         if (move.magnitude > 0f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(move);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
         }
+
+        // Update animations
+        animator.SetFloat("Speed", move.magnitude);
+        animator.SetBool("IsRunning", Input.GetKey(KeyCode.LeftShift) && !isCrouching);
+        animator.SetBool("IsCrouching", isCrouching);
     }
+
 
     private void HandleCrouch()
     {

@@ -4,15 +4,20 @@ using UnityEngine.Animations;
 
 [ActionCategory("Character")]
 [System.Serializable]
-public class PlayCharacterAnimationAction : ActionBase
+public class PlayCharacterAnimationAction : ActionBase, ICancelableAction
 {
     public GameObject target;
     public AnimationClip animationClip;
     public bool waitForEnd;
     public float fadeDuration = 0.5f; // Duration of the fade in seconds
 
+    private PlayableGraph playableGraph; // Reference to the playable graph for stopping
+    private bool isCanceled = false;    // Tracks if the action was canceled
+
     public override void Execute(GameObject hit_target, System.Action onComplete)
     {
+        isCanceled = false; // Reset the cancel flag
+
         if (target == null)
         {
             Debug.LogError("PlayCharacterAnimationAction: Target GameObject is null!");
@@ -27,7 +32,6 @@ public class PlayCharacterAnimationAction : ActionBase
             return;
         }
 
-        // Get Animator component
         Animator animator = target.GetComponentInChildren<Animator>();
         if (animator == null)
         {
@@ -36,29 +40,29 @@ public class PlayCharacterAnimationAction : ActionBase
             return;
         }
 
-        // Create a PlayableGraph
-        PlayableGraph playableGraph = PlayableGraph.Create("PlayAnimationGraph");
+        if (playableGraph.IsValid())
+        {
+            Debug.LogWarning("PlayCharacterAnimationAction: PlayableGraph already running. Stopping and recreating.");
+            playableGraph.Destroy();
+        }
+
+        playableGraph = PlayableGraph.Create("PlayAnimationGraph");
         AnimationPlayableOutput output = AnimationPlayableOutput.Create(playableGraph, "Animation", animator);
 
-        // Create two playables for the current and new animation
         AnimationClipPlayable currentClipPlayable = CreateCurrentAnimationPlayable(animator, playableGraph);
         AnimationClipPlayable newClipPlayable = AnimationClipPlayable.Create(playableGraph, animationClip);
 
-        // Create a mixer to blend animations
         AnimationMixerPlayable mixer = AnimationMixerPlayable.Create(playableGraph, 2);
         output.SetSourcePlayable(mixer);
 
-        // Connect the playables to the mixer
         playableGraph.Connect(currentClipPlayable, 0, mixer, 0);
         playableGraph.Connect(newClipPlayable, 0, mixer, 1);
 
-        // Set initial weights
-        mixer.SetInputWeight(0, 1); // Current clip starts fully active
-        mixer.SetInputWeight(1, 0); // New clip starts inactive
+        mixer.SetInputWeight(0, 1);
+        mixer.SetInputWeight(1, 0);
 
         playableGraph.Play();
 
-        // Start fading
         target.GetComponent<MonoBehaviour>()?.StartCoroutine(SmoothFadeAnimation(mixer, currentClipPlayable, newClipPlayable, playableGraph, onComplete));
     }
 
@@ -75,7 +79,6 @@ public class PlayCharacterAnimationAction : ActionBase
             return currentClipPlayable;
         }
 
-        // Return an empty clip if no current animation is active
         return AnimationClipPlayable.Create(graph, new AnimationClip());
     }
 
@@ -88,36 +91,60 @@ public class PlayCharacterAnimationAction : ActionBase
     {
         float elapsedTime = 0;
 
-        // Gradually fade from input 0 (current) to input 1 (new)
         while (elapsedTime < fadeDuration)
         {
+            if (isCanceled) // Stop if canceled
+            {
+                CleanupGraph(graph);
+                onComplete?.Invoke();
+                yield break;
+            }
+
             elapsedTime += Time.deltaTime;
-
-            // Smoothstep easing for smoother fade transitions
             float t = Mathf.Clamp01(elapsedTime / fadeDuration);
-            float easedT = t * t * (3f - 2f * t); // Smoothstep function
+            float easedT = t * t * (3f - 2f * t);
 
-            mixer.SetInputWeight(0, 1 - easedT); // Decrease weight of the current clip
-            mixer.SetInputWeight(1, easedT);     // Increase weight of the new clip
+            mixer.SetInputWeight(0, 1 - easedT);
+            mixer.SetInputWeight(1, easedT);
 
             yield return null;
         }
 
-        // Ensure the new clip is fully active
         mixer.SetInputWeight(0, 0);
         mixer.SetInputWeight(1, 1);
 
-        // Wait for the new animation to complete if required
         if (waitForEnd)
         {
             while (newClipPlayable.GetTime() < newClipPlayable.GetAnimationClip().length)
             {
+                if (isCanceled) // Stop if canceled
+                {
+                    CleanupGraph(graph);
+                    onComplete?.Invoke();
+                    yield break;
+                }
                 yield return null;
             }
         }
 
-        // Clean up the graph
-        graph.Destroy();
+        CleanupGraph(graph);
         onComplete?.Invoke();
+    }
+
+    public void Cancel()
+    {
+        isCanceled = true; // Set the canceled flag
+        if (playableGraph.IsValid())
+        {
+            CleanupGraph(playableGraph);
+        }
+    }
+
+    private void CleanupGraph(PlayableGraph graph)
+    {
+        if (graph.IsValid())
+        {
+            graph.Destroy();
+        }
     }
 }
