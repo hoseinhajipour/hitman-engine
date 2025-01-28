@@ -5,7 +5,7 @@ using UnityEngine.AI;
 [System.Serializable]
 public class FollowPlayerAction : ActionBase
 {
-    private GameObject Player;
+    public GameObject Player;
     public GameObject Target;
 
     [Tooltip("The speed at which the NavMeshAgent should move.")]

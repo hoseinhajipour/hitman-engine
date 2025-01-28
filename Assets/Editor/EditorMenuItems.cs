@@ -39,7 +39,9 @@ public static class EditorMenuItems
         sphereCollider.isTrigger = true;
 
         // Add the InteractionSystem component
-        TriggerObject.AddComponent<ActionTrigger>();
+        ActionTrigger ActionTrigger = TriggerObject.AddComponent<ActionTrigger>();
+        ActionManager actionManager = TriggerObject.AddComponent<ActionManager>();
+        ActionTrigger.actionManager = actionManager;
 
         // Ensure the new GameObject is selected and focused in the hierarchy
         GameObjectUtility.SetParentAndAlign(TriggerObject, menuCommand.context as GameObject);

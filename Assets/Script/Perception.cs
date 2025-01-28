@@ -10,78 +10,83 @@ public class Perception : MonoBehaviour
     public float attackRange = 2f; // Range within which to trigger an attack
 
     [Header("Actions")]
-    public ActionManager SightActions; // Actions to perform when the player is seen
     public ActionManager PatrolActions; // Actions to perform when the player is not seen
+    public ActionManager SightActions; // Actions to perform when the player is seen
     public ActionManager AttackActions; // Actions to perform when the player is near
+
+    [Header("Guard Mode")]
+    public bool isGuardMode = false; // Guard mode state
 
     private void Start()
     {
-        // Automatically find the head bone if not assigned
         if (headBone == null)
         {
-            headBone = transform.Find("Head"); // Example for default name
+            headBone = transform.Find("Head");
             if (headBone == null)
             {
                 Debug.LogError("Head bone not found! Assign it manually in the Inspector.");
             }
         }
-    }
 
-    private void OnDrawGizmos()
-    {
-        if (headBone != null)
-        {
-            // Draw a green cone to represent the field of view
-            Gizmos.color = Color.green;
-
-            Vector3 forward = headBone.forward * detectionRange;
-
-            Quaternion leftRayRotation = Quaternion.Euler(0, -detectionAngle / 2, 0);
-            Quaternion rightRayRotation = Quaternion.Euler(0, detectionAngle / 2, 0);
-
-            Vector3 leftRay = leftRayRotation * forward;
-            Vector3 rightRay = rightRayRotation * forward;
-
-            Gizmos.DrawRay(headBone.position, forward);
-            Gizmos.DrawRay(headBone.position, leftRay);
-            Gizmos.DrawRay(headBone.position, rightRay);
-
-            Gizmos.DrawWireSphere(headBone.position, detectionRange);
-
-            // Draw attack range
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(headBone.position, attackRange);
-        }
+        // Start patrolling by default
+        PatrolActions.RunActions(gameObject);
     }
 
     private void Update()
     {
-        if (IsPlayerInSight())
+        if (isGuardMode)
         {
-            if (IsPlayerInAttackRange())
+            // Stop PatrolActions when entering Guard Mode
+            if (PatrolActions.IsRunning())
             {
-                // اگر بازیکن در محدوده حمله است، اکشن حمله را اجرا کن
-                if (!AttackActions.IsRunning())
+                PatrolActions.StopActions();
+                SightActions.RunActions(gameObject);
+            }
+
+            // Guard Mode: Detect and react to the player
+            if (IsPlayerInSight())
+            {
+                if (IsPlayerInAttackRange())
                 {
-                    AttackActions.RunActions(gameObject);
+                    if (!AttackActions.IsRunning())
+                    {
+                        AttackActions.RunActions(gameObject);
+                    }
+                }
+                else
+                {
+                    if (AttackActions.IsRunning())
+                    {
+                        AttackActions.StopActions();
+                    }
+                    if (!SightActions.IsRunning())
+                    {
+                        SightActions.RunActions(gameObject);
+                    }
                 }
             }
             else
             {
-                // اگر بازیکن در محدوده حمله نیست، اکشن حمله را متوقف کن و اکشن دید را اجرا کن
+                // Player not in sight, stop attacking and sight actions
+                if (SightActions.IsRunning())
+                {
+                    SightActions.StopActions();
+                }
                 if (AttackActions.IsRunning())
                 {
                     AttackActions.StopActions();
-                }
-                if (!SightActions.IsRunning())
-                {
-                    SightActions.RunActions(gameObject);
                 }
             }
         }
         else
         {
-            // اگر بازیکن در دید نیست، اکشن‌های مربوط به دید و حمله را متوقف کن و اکشن گشت‌زنی را اجرا کن
+            // Default Mode: Only patrol, ignore the player
+            if (!PatrolActions.IsRunning())
+            {
+                PatrolActions.RunActions(gameObject);
+            }
+
+            // Stop any attack or sight actions if they were running
             if (SightActions.IsRunning())
             {
                 SightActions.StopActions();
@@ -90,12 +95,9 @@ public class Perception : MonoBehaviour
             {
                 AttackActions.StopActions();
             }
-            if (!PatrolActions.IsRunning())
-            {
-                PatrolActions.RunActions(gameObject);
-            }
         }
     }
+
 
     private bool IsPlayerInSight()
     {
@@ -134,5 +136,33 @@ public class Perception : MonoBehaviour
             }
         }
         return false;
+    }
+
+    // Public method to toggle Guard Mode
+    public void SetGuardMode(bool guardMode)
+    {
+        isGuardMode = guardMode;
+
+        if (isGuardMode)
+        {
+            // Enter Guard Mode: Stop patrolling and start detecting the player
+            PatrolActions.StopActions();
+
+            if (IsPlayerInSight())
+            {
+                SightActions.RunActions(gameObject);
+            }
+        }
+        else
+        {
+            // Exit Guard Mode: Stop attacking and sight actions, return to patrolling
+            SightActions.StopActions();
+            AttackActions.StopActions();
+
+            if (!PatrolActions.IsRunning())
+            {
+                PatrolActions.RunActions(gameObject);
+            }
+        }
     }
 }

@@ -46,7 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actions:
   - rid: 6402301821946167303
-  - rid: 6402301821946167307
+  - rid: 6402301829005705223
   destroyOnEnd: 0
   enableDebugLogs: 0
   references:
@@ -57,14 +57,15 @@ MonoBehaviour:
       data:
         message: find player
         logType: 3
-    - rid: 6402301821946167307
-      type: {class: FollowPlayerAction, ns: , asm: Assembly-CSharp}
+    - rid: 6402301829005705223
+      type: {class: NavMeshMoveAction, ns: , asm: Assembly-CSharp}
       data:
-        Target: {fileID: 2383868157470613218}
+        target: {fileID: 0}
+        destination: {x: 0, y: 0, z: 0}
+        destinationTrans: {fileID: 0}
+        waitToEnd: 0
         speed: 3.5
-        Run: 1
-        followDistance: 2
-        stopThreshold: 1
+        Run: 0
 --- !u!1 &2383868157470613218
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,8 +102,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6225668054146192446}
-  - {fileID: 4163057929915442813}
   - {fileID: 3227558835371236397}
+  - {fileID: 4163057929915442813}
   - {fileID: 5983023383495735594}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -217,9 +218,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   attackRange: 2
-  SightActions: {fileID: 2419699830343664529}
   PatrolActions: {fileID: 5631309472389345320}
+  SightActions: {fileID: 2419699830343664529}
   AttackActions: {fileID: 461319099817106897}
+  isGuardMode: 0
 --- !u!1 &3207897071363103270
 GameObject:
   m_ObjectHideFlags: 0
@@ -284,8 +286,6 @@ MonoBehaviour:
       data:
         target: {fileID: 6714256474581880452}
         animationName: Punching
-        avatarLayerIndex: -1
-        avatarLayerWeight: 1
         waitForEnd: 1
     - rid: 6402301821946167318
       type: {class: ResetAction, ns: , asm: Assembly-CSharp}

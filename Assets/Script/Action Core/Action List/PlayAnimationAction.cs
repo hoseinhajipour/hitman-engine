@@ -5,12 +5,9 @@ public class PlayAnimationAction : ActionBase
 {
     public GameObject target;
     public string animationName;
-    [Tooltip("The layer index to apply the animation on. Set to -1 to ignore layers.")]
-    public int avatarLayerIndex = -1; // Default to -1 to indicate no specific layer
-    [Range(0f, 1f)]
-    public float avatarLayerWeight = 1f; // Default weight for the specified layer
+    private string idleStateName = "idle"; // The name of the Idle state in the animator
     [Tooltip("Wait for the animation to finish before invoking onComplete.")]
-    public bool waitForEnd = false; // Checkbox for waiting for animation to end
+    public bool waitForEnd = false;
 
     public override void Execute(GameObject hit_target, System.Action onComplete)
     {
@@ -29,29 +26,39 @@ public class PlayAnimationAction : ActionBase
             return;
         }
 
-        if (avatarLayerIndex >= 0 && avatarLayerIndex < animator.layerCount)
-        {
-            animator.SetLayerWeight(avatarLayerIndex, avatarLayerWeight);
-        }
-
+        // Play the animation
         animator.Play(animationName);
 
         if (waitForEnd)
         {
-            AnimatorStateInfo animationStateInfo = animator.GetCurrentAnimatorStateInfo(avatarLayerIndex >= 0 ? avatarLayerIndex : 0);
-            float animationLength = animationStateInfo.length;
-
-            target.GetComponent<MonoBehaviour>()?.StartCoroutine(WaitForAnimationCoroutine(animationLength, onComplete));
+            // Start a coroutine to wait for the animation to finish
+            target.GetComponent<MonoBehaviour>()?.StartCoroutine(WaitForAnimationCoroutine(animator, onComplete));
         }
         else
         {
+            // Immediately invoke the completion callback
             onComplete?.Invoke();
         }
     }
 
-    private System.Collections.IEnumerator WaitForAnimationCoroutine(float duration, System.Action onComplete)
+    private System.Collections.IEnumerator WaitForAnimationCoroutine(Animator animator, System.Action onComplete)
     {
-        yield return new WaitForSeconds(duration);
+        // Wait until the Animator has transitioned to the target animation state
+        while (animator.GetCurrentAnimatorStateInfo(0).shortNameHash != Animator.StringToHash(animationName))
+        {
+            yield return null;
+        }
+
+        // Wait until the animation finishes
+        while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+        {
+            yield return null;
+        }
+
+        // Return to the Idle state after the animation finishes
+        animator.Play(idleStateName);
+
+        // Invoke the completion callback
         onComplete?.Invoke();
     }
 }

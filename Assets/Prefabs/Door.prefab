@@ -86,19 +86,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   actions:
-  - rid: -2
+  - rid: 6402301829005705218
   - rid: 6402301818438680581
+  destroyOnEnd: 0
+  enableDebugLogs: 0
   references:
     version: 2
     RefIds:
-    - rid: -2
-      type: {class: , ns: , asm: }
     - rid: 6402301818438680581
       type: {class: DoorAction, ns: , asm: Assembly-CSharp}
       data:
         door: {fileID: 5839117191460103538}
         duration: 1
         proximityRadius: 1
+    - rid: 6402301829005705218
+      type: {class: PlayAudioAction, ns: , asm: Assembly-CSharp}
+      data:
+        audioClip: {fileID: 8300000, guid: 522344573e1dae042980a26025f5deab, type: 3}
+        volume: 1
+        targetTransform: {fileID: 8964862083412333272}
 --- !u!114 &2842996002966078499
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,6 +119,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   actions:
   - rid: 6402301821946167296
+  - rid: 6402301829005705219
+  destroyOnEnd: 0
+  enableDebugLogs: 0
   references:
     version: 2
     RefIds:
@@ -121,6 +130,12 @@ MonoBehaviour:
       data:
         message: you cant
         logType: 3
+    - rid: 6402301829005705219
+      type: {class: PlayAudioAction, ns: , asm: Assembly-CSharp}
+      data:
+        audioClip: {fileID: 8300000, guid: 8a612133b1779de4b847dc1094c8215c, type: 3}
+        volume: 1
+        targetTransform: {fileID: 8964862083412333272}
 --- !u!1 &2923187590031767494
 GameObject:
   m_ObjectHideFlags: 0
